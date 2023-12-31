@@ -1,12 +1,12 @@
 Global:
   use_gpu: true
-  epoch_num: 100
+  epoch_num: 10
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: ./output/cls/mv3/
   save_epoch_step: 3
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: [0, 1000]
+  eval_batch_step: [0, 100]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
@@ -54,7 +54,7 @@ Train:
     name: SimpleDataSet
     data_dir: ./train_data/cls
     label_file_list:
-      - ./train_data/cls/train.txt
+      - ./train_data/cls/cls_gt_train.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -68,16 +68,17 @@ Train:
           keep_keys: ['image', 'label'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 512
+    # batch_size_per_card: 512
+    batch_size_per_card: 32
     drop_last: True
-    num_workers: 8
+    num_workers: 1
 
 Eval:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/cls
     label_file_list:
-      - ./train_data/cls/test.txt
+      - ./train_data/cls/cls_gt_test.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -90,5 +91,6 @@ Eval:
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 512
-    num_workers: 4
+    # batch_size_per_card: 512
+    batch_size_per_card: 32
+    num_workers: 1
