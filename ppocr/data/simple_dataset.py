@@ -145,9 +145,11 @@ class SimpleDataSet(Dataset):
         try:
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
-            file_name = substr[0]
+            print("\nsubstr:", substr)
+            file_name = substr[0][:-1]
             file_name = self._try_parse_filename_list(file_name)
-            label = substr[1]
+            label = f"{substr[1][1:-2]}\r"
+            print("\nlabel:", label)
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
